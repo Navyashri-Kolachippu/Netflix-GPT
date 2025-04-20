@@ -1,18 +1,72 @@
 import React, { useRef, useState } from 'react'
 import Header from './Header'
 import { checkValidData } from '../utils/validate';
+import {auth} from '../utils/firebase';
+import { createUserWithEmailAndPassword ,signInWithEmailAndPassword,updateProfile} from "firebase/auth";
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addUser} from '../utils/userSlice';
 
 const Login = () => {
   const [isSignInForm,setIsSignInForm] =useState(true);
   const [errorMessage,setErrormessage]=useState(null);
+  const navigate=useNavigate();
   const fullName =useRef(null);
   const email=useRef(null);
   const password=useRef(null);
+  const dispatch=useDispatch();
+
   const handleButtonClick=()=>{
     //console.log(email);
     const fullNameValue= isSignInForm ? "Navya Shri" : fullName.current.value;
     const message=checkValidData(fullNameValue,email.current.value,password.current.value);
     setErrormessage(message);
+    if(message) return;
+    if(!isSignInForm)
+    {
+      createUserWithEmailAndPassword(auth, email.current.value,password.current.value)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        updateProfile(user, {
+          displayName: fullName.current.value, 
+          photoURL: "https://occ-0-6247-2164.1.nflxso.net/dnm/api/v6/K6hjPJd6cR6FpVELC5Pd6ovHRSk/AAAABdpkabKqQAxyWzo6QW_ZnPz1IZLqlmNfK-t4L1VIeV1DY00JhLo_LMVFp936keDxj-V5UELAVJrU--iUUY2MaDxQSSO-0qw.png?r=e6e",
+         }).then(() => {
+          const {uid,email,displayName,photoURL} = auth.currentUser;
+          dispatch(
+            addUser(
+              {
+               uid:uid,
+               email:email,
+               displayName:displayName,
+               photoURL:photoURL,
+              })
+          );
+          navigate("/browse");
+        }).catch((error) => {
+            setErrormessage(error.message);
+        });
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setErrormessage(errorCode+"-"+errorMessage);
+      });
+
+    }
+    else{
+
+    signInWithEmailAndPassword(auth, email.current.value,password.current.value)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      navigate("/browse");
+      console.log(user);
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      setErrormessage(errorCode+"-"+errorMessage);
+    });
+    }
   }
   const toggleSignInForm = ()=>{
     setIsSignInForm(!isSignInForm);

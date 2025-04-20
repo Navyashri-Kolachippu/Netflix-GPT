@@ -9,6 +9,7 @@
 - useRef hook
 - firebase setup
 - deployment in firebase
+- sign in / sign up action
 
 
 # Features
