@@ -1,6 +1,14 @@
 # Netflix project
 - Create react app
 - install tailwind
+- header
+- routing of the app
+- login form
+- sign up form
+- form validation
+- useRef hook
+- firebase setup
+- deployment in firebase
 
 
 # Features

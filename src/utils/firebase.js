@@ -5,7 +5,7 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDbjgYkwCkI7J9Lmox_WaVwnWP1Kl3b0sE",
+  apiKey: "api key",
   authDomain: "netflixgpt-d74a3.firebaseapp.com",
   projectId: "netflixgpt-d74a3",
   storageBucket: "netflixgpt-d74a3.firebasestorage.app",
