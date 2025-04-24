@@ -3,14 +3,14 @@ import Header from './Header'
 import { checkValidData } from '../utils/validate';
 import {auth} from '../utils/firebase';
 import { createUserWithEmailAndPassword ,signInWithEmailAndPassword,updateProfile} from "firebase/auth";
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addUser} from '../utils/userSlice';
+import { background } from '../utils/constants';
 
 const Login = () => {
   const [isSignInForm,setIsSignInForm] =useState(true);
   const [errorMessage,setErrormessage]=useState(null);
-  const navigate=useNavigate();
+
   const fullName =useRef(null);
   const email=useRef(null);
   const password=useRef(null);
@@ -41,7 +41,6 @@ const Login = () => {
                photoURL:photoURL,
               })
           );
-          navigate("/browse");
         }).catch((error) => {
             setErrormessage(error.message);
         });
@@ -54,11 +53,9 @@ const Login = () => {
 
     }
     else{
-
     signInWithEmailAndPassword(auth, email.current.value,password.current.value)
     .then((userCredential) => {
       const user = userCredential.user;
-      navigate("/browse");
       console.log(user);
     })
     .catch((error) => {
@@ -75,7 +72,7 @@ const Login = () => {
     <div>
       <Header/>
     <div className="absolute">
-    <img src="https://assets.nflxext.com/ffe/siteui/vlv3/fc164b4b-f085-44ee-bb7f-ec7df8539eff/d23a1608-7d90-4da1-93d6-bae2fe60a69b/IN-en-20230814-popsignuptwoweeks-perspective_alpha_website_large.jpg" alt="background"/>  
+    <img src={background} alt="background"/>  
     </div>
     <form onSubmit={(e)=>e.preventDefault()} className="absolute p-12 w-3/12 bg-black my-36 mx-auto right-0 left-0 text-white bg-opacity-80  rounded-lg">
     <h1 className="font-bold text-3xl py-4">{isSignInForm ? "Sign In" : "Sign Up"}</h1>
