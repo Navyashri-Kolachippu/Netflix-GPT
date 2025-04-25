@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser, removeUser } from '../utils/userSlice';
 import { LOGO } from '../utils/constants';
+import { toggleShowGPTSearch } from '../utils/gptSlice';
 
 const Header = () => {
   const navigate =useNavigate();
@@ -17,6 +18,10 @@ const Header = () => {
       }).catch((error) => {
         console.log(error);
       });
+  }
+
+  const handleGPTSearch=()=>{
+      dispatch(toggleShowGPTSearch());
   }
 
   useEffect(()=>{
@@ -47,6 +52,7 @@ const Header = () => {
     <img className="w-44"src={LOGO}
     alt="logo"/>
     {user && <div className="flex p-2">
+    <button className="text-white bg-slate-400 rounded-lg m-2 p-2" onClick={handleGPTSearch}>GPT Search</button>
     <img className="hidden md:block w-12 h-12" alt="usericon" src={userIcon}/>
     <button className="font-bold text-white" onClick={handleSignOut}>(Sign Out)</button>
     </div>}
